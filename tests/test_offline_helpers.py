@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import subprocess
+import shutil
 import sys
 import tempfile
 import unittest
@@ -82,6 +83,21 @@ class AttributionTests(unittest.TestCase):
         for url in ("javascript:alert(1)", "file:///tmp/file", "/relative"):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 utm.tag_url(url, "github", "skill")
+
+
+class PublicCheckTests(unittest.TestCase):
+    def test_ignores_git_metadata_and_itself_through_a_symlink(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = Path(tmp) / "checkout"
+            shutil.copytree(ROOT, checkout, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            metadata = checkout / ".git"
+            metadata.mkdir()
+            (metadata / "config").write_text("identity=" + "local" + "@" + "example.test")
+            alias = Path(tmp) / "linked"
+            alias.symlink_to(checkout, target_is_directory=True)
+            result = subprocess.run([sys.executable, "-I", str(alias / "scripts/check.py")],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

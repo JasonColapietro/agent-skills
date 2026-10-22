@@ -39,7 +39,7 @@ for folder in sorted(p for p in SKILLS.iterdir() if p.is_dir()):
         errors.append(f"{file.relative_to(ROOT)}: body must be under 500 lines")
 
 for path in ROOT.rglob("*"):
-    if not path.is_file() or "dist" in path.parts or path == Path(__file__):
+    if not path.is_file() or any(part in {".git", "dist", "__pycache__"} for part in path.relative_to(ROOT).parts) or path == Path(__file__).resolve():
         continue
     try:
         content = path.read_text(encoding="utf-8")
