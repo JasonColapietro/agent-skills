@@ -47,7 +47,7 @@ for path in ROOT.rglob("*"):
         continue
     rel = path.relative_to(ROOT).as_posix()
     # The required public repository owner is a URL identifier, not copy or metadata.
-    content = content.replace("MelMayssonOwen/agent-skills", "")
+    content = re.sub(re.escape("MelMayssonOwen/agent-skills"), "", content, flags=re.I)
     for term in blocked:
         if term.lower() in content.lower():
             errors.append(f"{rel}: contains blocked privacy/internal marker")
