@@ -44,3 +44,12 @@ See each skill's `references/setup.md` for MCP connection snippets. MIT licensed
 ```
 
 The TimeToPost, Toolfound and Clef plugins also register their hosted MCP servers. TimeToPost signs you in through your browser (OAuth); never paste an API token into chat.
+
+## Local validation
+
+```sh
+python3 -I scripts/check.py
+python3 -I -m unittest discover -s tests -v
+```
+
+These checks cover skill metadata, public-content rules, output-file protection, budget formulas, and preservation of existing campaign attribution. They do not connect to or validate the hosted MCP services.
