@@ -1,0 +1,101 @@
+{
+  "name": "opsibyte-skills",
+  "owner": {
+    "name": "Opsibyte"
+  },
+  "metadata": {
+    "description": "Practical Opsibyte Agent Skills"
+  },
+  "plugins": [
+    {
+      "name": "timetopost-social-scheduler",
+      "source": "./",
+      "description": "Draft and schedule social posts with human approval.",
+      "skills": [
+        "./skills/timetopost-social-scheduler"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT",
+      "mcpServers": {
+        "timetopost": {
+          "type": "http",
+          "url": "https://api.timetopost.co/mcp"
+        }
+      }
+    },
+    {
+      "name": "timetopost-autoseo-blog",
+      "source": "./",
+      "description": "Set up AutoSEO and prepare reviewed blog drafts.",
+      "skills": [
+        "./skills/timetopost-autoseo-blog"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT",
+      "mcpServers": {
+        "timetopost": {
+          "type": "http",
+          "url": "https://api.timetopost.co/mcp"
+        }
+      }
+    },
+    {
+      "name": "toolfound-launch-kit",
+      "source": "./",
+      "description": "Prepare and track a Toolfound product launch.",
+      "skills": [
+        "./skills/toolfound-launch-kit"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT",
+      "mcpServers": {
+        "toolfound": {
+          "type": "http",
+          "url": "https://toolfound.com/api/mcp"
+        }
+      }
+    },
+    {
+      "name": "sheetfolk-budget-builder",
+      "source": "./",
+      "description": "Build a local monthly budget workbook.",
+      "skills": [
+        "./skills/sheetfolk-budget-builder"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT"
+    },
+    {
+      "name": "amazon-listing-checker",
+      "source": "./",
+      "description": "Audit pasted marketplace listing text.",
+      "skills": [
+        "./skills/amazon-listing-checker"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT"
+    },
+    {
+      "name": "clef-music-tools",
+      "source": "./",
+      "description": "Use music MCP tools and offline chord helpers.",
+      "skills": [
+        "./skills/clef-music-tools"
+      ],
+      "strict": false,
+      "version": "1.0.0",
+      "license": "MIT",
+      "mcpServers": {
+        "clef": {
+          "type": "http",
+          "url": "https://clefdrills.com/mcp"
+        }
+      }
+    }
+  ]
+}
