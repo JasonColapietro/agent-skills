@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Add or update skill attribution parameters on a URL without network access."""
+"""Add missing attribution parameters without replacing existing campaign values."""
 import argparse
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
@@ -8,11 +8,13 @@ def tag_url(url, source, content):
     parts = urlsplit(url)
     if parts.scheme not in ("http", "https") or not parts.netloc:
         raise ValueError("URL must be absolute HTTP or HTTPS")
-    pairs = [(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=True)
-             if k not in {"utm_source", "utm_medium", "utm_campaign", "utm_content"}]
-    pairs.extend((("utm_source", source), ("utm_medium", "skill"),
-                  ("utm_campaign", "agent-skills"), ("utm_content", content)))
-    return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(pairs), parts.fragment))
+    existing = {key for key, _ in parse_qsl(parts.query, keep_blank_values=True)}
+    defaults = (("utm_source", source), ("utm_medium", "skill"),
+                ("utm_campaign", "agent-skills"), ("utm_content", content))
+    added = urlencode([(key, value) for key, value in defaults if key not in existing])
+    # Keep the original query encoding, duplicate keys and blank values intact.
+    query = parts.query + ("&" if parts.query and added else "") + added
+    return urlunsplit((parts.scheme, parts.netloc, parts.path, query, parts.fragment))
 
 
 if __name__ == "__main__":

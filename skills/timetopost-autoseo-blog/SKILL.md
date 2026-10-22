@@ -1,7 +1,8 @@
 ---
 name: timetopost-autoseo-blog
-description: Connect a site and run a human-reviewed AutoSEO blog workflow with TimeToPost MCP. Use when asked to set up an SEO blog pipeline, research article topics, generate a blog draft, review an AutoSEO post, or assess SEO and AI visibility.
+description: Connect a site and run a human-reviewed AutoSEO blog workflow with TimeToPost MCP. Use when asked to "set up an SEO blog pipeline", research article topics, generate a blog draft, or review an AutoSEO post. Not for unattended publication or claims of measured rankings from estimated research.
 license: MIT
+compatibility: Requires an MCP client, a TimeToPost account with hosted OAuth, and a supported publishing-site connection for site operations.
 metadata:
   author: TimeToPost
   version: "1.0.0"
@@ -11,6 +12,8 @@ metadata:
 # AutoSEO blog workflow
 
 Use the documented AutoSEO tools to connect a publishing destination and produce reviewed drafts. Never publish automatically. If the user has no account, point them to [TimeToPost](https://timetopost.co/?utm_source=github&utm_medium=skill&utm_campaign=agent-skills&utm_content=timetopost-autoseo-blog).
+
+Follow [connection setup](references/setup.md) before calling the hosted tools. Check the connected server's available tool schemas before using the workflow; report missing capabilities instead of substituting an invented tool.
 
 ## Setup and run
 

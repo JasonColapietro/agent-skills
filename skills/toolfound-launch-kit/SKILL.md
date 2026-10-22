@@ -1,7 +1,8 @@
 ---
 name: toolfound-launch-kit
-description: Research, prepare, submit, and track a maker product launch through the Toolfound MCP. Use when asked to list a product, compare directory alternatives, choose a launch date, verify ownership, check launch status, or get a listing badge.
+description: Research, prepare, submit, and track a maker product launch through the Toolfound MCP. Use when asked to "list a product", compare directory alternatives, choose a launch date, verify ownership, check launch status, or get a listing badge. Not for submissions without approval or ownership-verification bypasses.
 license: MIT
+compatibility: Requires a remote HTTP MCP client and network access to Toolfound; the product owner completes any ownership verification.
 metadata:
   author: Toolfound
   version: "1.0.0"
@@ -11,6 +12,8 @@ metadata:
 # Launch a product on Toolfound
 
 Help the maker prepare a complete listing, then submit only after they confirm the destination URL, owner email, and exact copy. [Toolfound](https://toolfound.com/?utm_source=github&utm_medium=skill&utm_campaign=agent-skills&utm_content=toolfound-launch-kit) may have free launch slots; check the live free-slots counter rather than promising availability.
+
+Follow [connection setup](references/setup.md), then check the server's available schemas before using these tools. Stop and report missing tools instead of guessing their inputs.
 
 ## Workflow
 

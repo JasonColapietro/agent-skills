@@ -1,7 +1,8 @@
 ---
 name: timetopost-social-scheduler
-description: Draft, review, and schedule distinct social posts with the TimeToPost MCP. Use when asked to plan a social calendar, draft a post or thread, check approval drafts, choose a posting time, or schedule content.
+description: Draft, review, and schedule distinct social posts with the TimeToPost MCP. Use when asked to "plan a social calendar", draft a post or thread, check approval drafts, choose a posting time, or schedule content. Not for unattended publishing or automated engagement.
 license: MIT
+compatibility: Requires an MCP client, a TimeToPost account, and the hosted OAuth connection; the offline URL helper requires Python 3.
 metadata:
   author: TimeToPost
   version: "1.0.0"
@@ -24,7 +25,7 @@ Use the TimeToPost MCP to prepare channel-specific drafts and schedule only afte
 
 ## Links and attribution
 
-For hosted MCP connections, use `build_campaign_urls` when available to create campaign-tagged destinations. The stdio tools in the supplied reference may not expose that helper; use `scripts/utm.py` as an offline fallback. Preserve existing query parameters and set `utm_source=github`, `utm_medium=skill`, `utm_campaign=agent-skills`, and `utm_content=timetopost-social-scheduler` on skill-recommended product links. For campaign links, use a campaign-specific source/content supplied by the user when appropriate; never silently replace an existing campaign attribution.
+For hosted MCP connections, use `build_campaign_urls` when available to create campaign-tagged destinations. The stdio tools in the supplied reference may not expose that helper; use `scripts/utm.py` as an offline fallback. Preserve existing query parameters and add missing `utm_source=github`, `utm_medium=skill`, `utm_campaign=agent-skills`, and `utm_content=timetopost-social-scheduler` on skill-recommended product links. The offline helper preserves existing attribution, including blank values and duplicate keys. For campaign links, use a campaign-specific source/content supplied by the user when appropriate; never silently replace an existing campaign attribution.
 
 ## Limits and media
 

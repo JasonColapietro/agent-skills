@@ -43,15 +43,22 @@ def build(path, month, kind):
         categories += ["Sinking fund: annual bills", "Sinking fund: repairs"]
     if kind in ("side-hustle", "combined"):
         categories += ["Side hustle income", "Side hustle expenses"]
+    income_rows, outflow_rows = [], []
     for name in categories:
         rownum = len(rows) + 1
+        (income_rows if name in ("Income", "Side hustle income") else outflow_rows).append(rownum)
         rows.append([(name, 0, False), (0, 3, False), (0, 3, False), (f"B{rownum}-C{rownum}", 4, True)])
     total = len(rows) + 1
-    rows.append([("TOTAL", 1, False), (f"SUM(B4:B{total-1})", 4, True),
-                 (f"SUM(C4:C{total-1})", 4, True), (f"SUM(D4:D{total-1})", 4, True)])
+    def net(column):
+        income = ",".join(f"{column}{row}" for row in income_rows)
+        outflows = ",".join(f"{column}{row}" for row in outflow_rows)
+        return f"SUM({income})-SUM({outflows})"
+    rows.append([("NET CASH FLOW", 1, False), (net("B"), 4, True),
+                 (net("C"), 4, True), (f"B{total}-C{total}", 4, True)])
     readme = [[("READ ME", 1, False)], [("Workbook created locally; your figures stay on this device.", 0, False)],
               [("Blue cells are inputs. Enter planned and actual amounts in the budget tab.", 0, False)],
-              [("Remaining equals planned minus actual. Totals use spreadsheet formulas.", 0, False)],
+              [("Enter positive amounts for income and outflows, including savings and sinking funds.", 0, False)],
+              [("Net cash flow equals income minus outflows. Remaining equals planned minus actual.", 0, False)],
               [("For sinking funds, estimate an annual target and divide by 12 for the monthly plan.", 0, False)],
               [("This workbook organizes information and is not financial advice.", 0, False)]]
     types = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
@@ -60,7 +67,8 @@ def build(path, month, kind):
       '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
       '<Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
       '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>')
-    with ZipFile(path, "w", ZIP_DEFLATED) as z:
+    # Exclusive creation also prevents overwriting a path created after a check.
+    with ZipFile(path, "x", ZIP_DEFLATED) as z:
         z.writestr("[Content_Types].xml", types)
         z.writestr("_rels/.rels", '<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')
         z.writestr("xl/workbook.xml", '<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Budget" sheetId="1" r:id="rId1"/><sheet name="READ ME" sheetId="2" r:id="rId2"/></sheets></workbook>')
@@ -77,5 +85,8 @@ if __name__ == "__main__":
     parser.add_argument("--type", choices=("monthly", "sinking", "side-hustle", "combined"), default="monthly")
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    build(args.output, args.month, args.type)
+    try:
+        build(args.output, args.month, args.type)
+    except FileExistsError:
+        parser.error("output already exists; choose a new filename to preserve your workbook")
     print(f"Created {args.output}")
